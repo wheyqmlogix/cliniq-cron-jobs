@@ -1,0 +1,19 @@
+name: Daily Subscription Check
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs daily at midnight UTC
+  workflow_dispatch:
+
+jobs:
+  check-subscriptions:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call Subscription Check API
+        run: |
+          curl -X GET "${{ secrets.APP_URL }}/api/cron/subscription-check" \
+          -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+          --fail \
+          --show-error \
+          --silent
