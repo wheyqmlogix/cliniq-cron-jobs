@@ -1,0 +1,19 @@
+name: Hourly SMS Reminders
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Runs every hour
+  workflow_dispatch:
+
+jobs:
+  send-reminders:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call SMS Reminders API
+        run: |
+          curl -X GET "${{ secrets.APP_URL }}/api/cron/sms-reminders" \
+          -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+          --fail \
+          --show-error \
+          --silent
